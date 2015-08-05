@@ -33,6 +33,7 @@
  * Spawn a task with Kaa client main loop
  */
 #define CMD_KAA_START    "KAA+START"
+
 /*
  * Stop Kaa client
  */
@@ -41,5 +42,24 @@
 /*
  * Send kaa_profile to Kaa server
  */
-#define CMD_KAA_SEND_PROFILE "KAA+PROUPD"
+#define CMD_KAA_SEND_PROFILE "KAA+PRO"
+
+/*
+ * Send log record to Kaa server 
+ */
+#define CMD_KAA_LOG_UPLOAD "KAA+LOG"
+
+/*
+ * Get a config variable
+ * KAA+CONFIG?key
+ * value
+ */
+#define CMD_KAA_CONFIG_GETVAR "KAA+CONFIG?"
+
+/*
+ * Set a config variable
+ * KAA+CONFIG=key value
+ */
+#define CMA_KAA_CONFIG_SETVAR "KAA+CONFIG="
+
 #endif /* CMD_LIST_H */

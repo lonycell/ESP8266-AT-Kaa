@@ -29,8 +29,7 @@ set(APP_NAME ESP8266-AT-Kaa)
 
 include(${CMAKE_TOOLCHAIN_FILE})
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src
-                    ${CMAKE_CURRENT_SOURCE_DIR}/include
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                     ${CMAKE_CURRENT_SOURCE_DIR}/include
                     ${KAA_SDK_ROOT}/include
                     ${ESP8266_INCDIRS}
@@ -40,16 +39,11 @@ link_directories(${KAA_SDK_ROOT}/lib
                  ${ESP8266_LIBDIR}
                 )
 
-set (SRC
-    src/kaa_demo.c
-    )
-
 add_library(esp-platform STATIC ${ESP8266_SRC})
 add_executable(${APP_NAME} blank.c)
-add_dependencies(${APP_NAME} esp-platform ${APP_NAME}_s kaac_s)
-add_library(${APP_NAME}_s STATIC ${SRC})
+add_dependencies(${APP_NAME} esp-platform  kaac_s)
 
-target_link_libraries(${APP_NAME} ${APP_NAME}_s esp-platform)
+target_link_libraries(${APP_NAME} esp-platform)
 
 add_custom_command(TARGET ${APP_NAME}
                    POST_BUILD

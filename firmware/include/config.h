@@ -5,4 +5,7 @@
 #define MAX_CMD_LEN        1024
 #define CMD_ECHO
 #define CMD_KAA_PROC_MAX_DELAY 200
+#define CMD_KAA_LOOP_TASK_MAX_DELAY 15
+#define SHOW_SYSTEM_MESSAGES
+
 #endif /* CONFIG_H */

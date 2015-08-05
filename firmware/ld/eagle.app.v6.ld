@@ -161,16 +161,23 @@ SECTIONS
   {
     _irom0_text_start = ABSOLUTE(.);
     *(.irom0.literal .irom.literal .irom.text.literal .irom0.text .irom.text)
-    /usr/local/kaa-esp8266/lib/libkaac_s.a:(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
-    /opt/Espressif/esp-rtos-sdk/lib/liblwip.a:(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
- /*   /opt/Espressif/esp-rtos-sdk/lib/libpp.a:(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
-*/    /opt/Espressif/esp-rtos-sdk/lib/libnet80211.a:(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
-    /opt/Espressif/crosstool-NG/builds/xtensa-lx106-elf/lib/gcc/xtensa-lx106-elf/4.8.2/libgcc.a:( .text .text.*  .literal .literal.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
-    /opt/Espressif/esp-rtos-sdk/lib/libfreertos.a:(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*) 
- /*   /opt/Espressif/esp-rtos-sdk/lib/libmain.a:(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
-    /opt/Espressif/esp-rtos-sdk/lib/libhal.a:(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
-    /opt/Espressif/esp-rtos-sdk/lib/libwpa.a:(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)*/
-    _irom0_text_end = ABSOLUTE(.);
+    *libkaac_s.a:(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
+/*    *libkaac_s.a:kaa_bootstrap_manager.c.o(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
+    *libkaac_s.a:kaa_tcp_channel.c.o(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
+    *libkaac_s.a:kaa_platform_protocol.c.o(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
+    *libkaac_s.a:kaa_channel_manager.c.o(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
+    *libkaac_s.a:kaa_common_schema.c.o(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
+    *libkaac_s.a:kaa_notification_manager.c.o(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
+    *libkaac_s.a:kaa_profile.c.o(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)*/
+    /**liblwip.a:(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
+    *libpp.a:(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
+    *libnet80211.a:(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
+    *libgcc.a:( .text .text.*  .literal .literal.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
+    *libfreertos.a:(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
+    *libmain.a:(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
+    *libhal.a:(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
+    *libwpa.a:(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
+ */   _irom0_text_end = ABSOLUTE(.);
   } >irom0_0_seg :irom0_0_phdr
 
 
@@ -205,8 +212,6 @@ SECTIONS
     *(.entry.text)
     *(.init.literal)
     *(.init)
-    /*    /*(EXCLUDE_FILE(/usr/local/kaa-esp8266/lib/libkaac_s.a) .literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)*/
-    /*/opt/Espressif/crosstool-NG/builds/xtensa-lx106-elf/lib/gcc/xtensa-lx106-elf/4.8.2/libgcc.a:( .text .text.*  .literal .literal.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)*/
     *( .literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
     *(.fini.literal)
     *(.fini)

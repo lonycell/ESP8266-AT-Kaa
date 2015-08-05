@@ -72,39 +72,13 @@ void cmd_parse_cmd() {
         return;
     
     if (CMD_CMP(CMD_CHECK)) {
-        cmd_print(CMD_OK);
-        return;
+        goto succ;
     }
 
     if (CMD_CMP(CMD_RST)) {
         system_restart();
     }
-#if 0
-    if (CMD_CMP(CMD_SET_SSID)) { 
-        size_t cmd_len = strlen(CMD_SET_SSID);
-        /* -1 for space between cmd name and ssid */
-        size_t ssid_len = cmd_buffer_ptr - cmd_len - 1;
-        if(cmd_buffer[cmd_len]!=' ' || ssid_len > sizeof(sta_cfg.ssid))
-            goto error;
-        memset(sta_cfg.ssid, 0, sizeof(sta_cfg.ssid));
-        memcpy(sta_cfg.ssid, cmd_buffer + cmd_len + 1, ssid_len);
-        cmd_print(CMD_OK);
-        return;
-    }
     
-    if (CMD_CMP(CMD_SET_PWD)) { 
-        size_t cmd_len = strlen(CMD_SET_PWD);
-        /* -1 for space between cmd name and pwd */
-        size_t pwd_len = cmd_buffer_ptr - cmd_len - 1;
-        if(cmd_buffer[cmd_len]!=' ' || pwd_len > sizeof(sta_cfg.password))
-            goto error;
-        memset(sta_cfg.password, 0, sizeof(sta_cfg.password));
-        sta_cfg.password[pwd_len]=0;
-        memcpy(sta_cfg.password, cmd_buffer + cmd_len + 1, pwd_len);
-        cmd_print(CMD_OK);
-        return;
-    }
-#endif
     if (CMD_CMP(CMD_WIFI_CONNECT)) {
         char *params[2];
         size_t ssid_len, pwd_len;
@@ -146,8 +120,7 @@ void cmd_parse_cmd() {
                 case STATION_CONNECT_FAIL:
                     goto conn_error;
                 case STATION_GOT_IP:
-                    cmd_print(CMD_OK);
-                    return;
+                    goto succ;
                 case STATION_IDLE:
                     goto conn_error;
                 case STATION_CONNECTING:
@@ -172,15 +145,17 @@ void cmd_parse_cmd() {
     }
 
     if (CMD_CMP(CMD_KAA_START)) {
+        if(kaa_task_handle)
+            goto succ;
         xTaskCreate(kaa_run, (const signed char*)"", DEFAULT_STACK_SIZE, NULL, 3, &kaa_task_handle);
-
+        if(!kaa_cmd_queue)
+            goto error;
         if (xQueueReceive(kaa_cmd_queue, (void *)&kaa_cmd_evt, (portTickType)portMAX_DELAY)) {
             switch (kaa_cmd_evt) {
                 case KAA_CMD_ERR:
                     goto error;
                 case KAA_CMD_CREATED:
-                    cmd_print(CMD_OK);
-                    return;
+                    goto succ;
                 default:
                     goto error;
             }
@@ -189,22 +164,23 @@ void cmd_parse_cmd() {
     }
 
     if (CMD_CMP(CMD_KAA_STOP)) {
-        if (!kaa_task_handle)
+        if (!kaa_task_handle || !cmd_kaa_queue || !kaa_cmd_queue)
             goto error;
         kaa_cmd_evt = KAA_CMD_STOP_CLIENT;
         xQueueSendToBack(cmd_kaa_queue, &kaa_cmd_evt, 0);
-        if (xQueueReceive(kaa_cmd_queue, (void*)&kaa_cmd_evt, (portTickType)portMAX_DELAY))
+        if (xQueueReceive(kaa_cmd_queue, (void*)&kaa_cmd_evt, (portTickType)CMD_KAA_PROC_MAX_DELAY))
             if (kaa_cmd_evt!=KAA_CMD_ERR) {
-                cmd_print(CMD_OK);
-                return;
+                vTaskDelete(kaa_task_handle);
+                kaa_task_handle = 0;
+                goto succ;
             }
         goto error;
     }
 
     if(CMD_CMP(CMD_KAA_SEND_PROFILE)) {
-        if (!kaa_task_handle || !cmd_arg_semphr)
+        if (!kaa_task_handle || !cmd_arg_semphr || !cmd_kaa_queue)
             goto error;
-        if (xSemaphoreTake(cmd_arg_semphr, (portTickType)CMD_KAA_PROC_MAX_DELAY)==pdTRUE) {
+        if (xSemaphoreTake(cmd_arg_semphr, (portTickType)CMD_KAA_PROC_MAX_DELAY)) {
             cmd_arg = cmd_buffer + strlen(CMD_KAA_SEND_PROFILE) + 1;
             xSemaphoreGive(cmd_arg_semphr);
         } else
@@ -213,16 +189,37 @@ void cmd_parse_cmd() {
         kaa_cmd_evt = KAA_CMD_PROFILE_UPDATE;
         xQueueSendToBack(cmd_kaa_queue, &kaa_cmd_evt, 0);
         
+        if (xQueueReceive(kaa_cmd_queue, (void*)&kaa_cmd_evt, (portTickType)CMD_KAA_PROC_MAX_DELAY))
+            if (kaa_cmd_evt!=KAA_CMD_ERR) {
+                goto succ;
+            }
+        goto error;
+    }
+
+    if(CMD_CMP(CMD_KAA_LOG_UPLOAD)) {
+        if (!kaa_task_handle || !cmd_arg_semphr || !cmd_kaa_queue)
+            goto error;
+        if (xSemaphoreTake(cmd_arg_semphr, (portTickType)CMD_KAA_PROC_MAX_DELAY)==pdTRUE) {
+            cmd_arg = cmd_buffer + strlen(CMD_KAA_SEND_PROFILE) + 1;
+            xSemaphoreGive(cmd_arg_semphr);
+        } else
+            goto error;
+
+        kaa_cmd_evt = KAA_CMD_LOG_UPLOAD;
+        xQueueSendToBack(cmd_kaa_queue, &kaa_cmd_evt, 0);
+        
         if (xQueueReceive(kaa_cmd_queue, (void*)&kaa_cmd_evt, (portTickType)portMAX_DELAY))
             if (kaa_cmd_evt!=KAA_CMD_ERR) {
-                cmd_print(CMD_OK);
-                return;
+                goto succ;
             }
         goto error;
     }
 
 error:
     cmd_print(CMD_ERR);
+    return;
+succ:
+    cmd_print(CMD_OK);
     return;
 }
 

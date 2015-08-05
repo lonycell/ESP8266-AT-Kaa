@@ -10,7 +10,8 @@ typedef enum {
 
     /* CMD to KAA */
     KAA_CMD_STOP_CLIENT,
-    KAA_CMD_PROFILE_UPDATE
+    KAA_CMD_PROFILE_UPDATE,
+    KAA_CMD_LOG_UPLOAD
 } kaa_cmd_evt_t;
 
 /*
