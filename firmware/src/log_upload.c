@@ -14,8 +14,7 @@ int log_upload(kaa_client_t *kaa_client, char *str) {
     if(!log_record)
         return 1;
 
-    log_record->string = pvPortMalloc(strlen(str)+1);
-    strcpy(log_record->string, str);
+    log_record->string = kaa_string_copy_create(str); //ppvPortMalloc(strlen(str)+1);
 
     kaa_error_t err = kaa_logging_add_record(
                       kaa_client_get_context(kaa_client)->log_collector,

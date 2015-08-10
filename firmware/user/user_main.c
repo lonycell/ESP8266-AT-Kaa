@@ -7,9 +7,9 @@
 #include "driver/uart.h"
 
 void ICACHE_FLASH_ATTR user_init() {
-    cmd_init();
     uart_init_new();
     UART_SetBaudrate(UART0, 115200);
+    cmd_init();
     system_print_meminfo();
     printf("Free heap: %d\r\n", system_get_free_heap_size());
    

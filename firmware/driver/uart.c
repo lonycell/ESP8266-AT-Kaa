@@ -66,54 +66,6 @@ uart0_write_char(char c)
     }
 }
 
-LOCAL void
-uart_rx_intr_handler_ssc(void)
-{
-    /* uart0 and uart1 intr combine togther, when interrupt occur, see reg 0x3ff20020, bit2, bit0 represents
-      * uart1 and uart0 respectively
-      */
-    os_event_t e;
-    portBASE_TYPE xHigherPriorityTaskWoken;
-
-    uint8 RcvChar;
-    uint8 uart_no = 0;
-
-    if (UART_RXFIFO_FULL_INT_ST != (READ_PERI_REG(UART_INT_ST(uart_no)) & UART_RXFIFO_FULL_INT_ST)) {
-        return;
-    }
-
-    RcvChar = READ_PERI_REG(UART_FIFO(uart_no)) & 0xFF;
-
-    WRITE_PERI_REG(UART_INT_CLR(uart_no), UART_RXFIFO_FULL_INT_CLR);
-
-    e.event = UART_EVENT_RX_CHAR;
-    e.param = RcvChar;
-
-    xQueueSendFromISR(xQueueUart, (void *)&e, &xHigherPriorityTaskWoken);
-    portEND_SWITCHING_ISR(xHigherPriorityTaskWoken);
-}
-
-LOCAL void ICACHE_FLASH_ATTR
-uart_task(void *pvParameters)
-{
-    os_event_t e;
-
-    for (;;) {
-        if (xQueueReceive(xQueueUart, (void *)&e, (portTickType)portMAX_DELAY)) {
-            switch (e.event) {
-                case UART_EVENT_RX_CHAR:
-                    printf("%c", e.param);
-                    break;
-
-                default:
-                    break;
-            }
-        }
-    }
-
-    vTaskDelete(NULL);
-}
-
 void ICACHE_FLASH_ATTR
 UART_SetWordLength(UART_Port uart_no, UART_WordLength len)
 {
@@ -263,20 +215,17 @@ uart0_rx_intr_handler(void *para)
     /* uart0 and uart1 intr combine togther, when interrupt occur, see reg 0x3ff20020, bit2, bit0 represents
     * uart1 and uart0 respectively
     */
-    uint8 RcvChar;
+    (void)para;
     uint8 uart_no = UART0;//UartDev.buff_uart_no;
     uint8 fifo_len = 0;
     uint8 buf_idx = 0;
-    uint8 fifo_tmp[128] = {0};
 
     uint32 uart_intr_status = READ_PERI_REG(UART_INT_ST(uart_no)) ;
 
     while (uart_intr_status != 0x0) {
         if (UART_FRM_ERR_INT_ST == (uart_intr_status & UART_FRM_ERR_INT_ST)) {
-            //printf("FRM_ERR\r\n");
             WRITE_PERI_REG(UART_INT_CLR(uart_no), UART_FRM_ERR_INT_CLR);
         } else if (UART_RXFIFO_FULL_INT_ST == (uart_intr_status & UART_RXFIFO_FULL_INT_ST)) {
-//            printf("full\r\n");
             fifo_len = (READ_PERI_REG(UART_STATUS(UART0)) >> UART_RXFIFO_CNT_S)&UART_RXFIFO_CNT;
             buf_idx = 0;
 
@@ -287,7 +236,6 @@ uart0_rx_intr_handler(void *para)
 
             WRITE_PERI_REG(UART_INT_CLR(UART0), UART_RXFIFO_FULL_INT_CLR);
         } else if (UART_RXFIFO_TOUT_INT_ST == (uart_intr_status & UART_RXFIFO_TOUT_INT_ST)) {
-  //          printf("tout\r\n");
             fifo_len = (READ_PERI_REG(UART_STATUS(UART0)) >> UART_RXFIFO_CNT_S)&UART_RXFIFO_CNT;
             buf_idx = 0;
 
@@ -299,7 +247,6 @@ uart0_rx_intr_handler(void *para)
 
             WRITE_PERI_REG(UART_INT_CLR(UART0), UART_RXFIFO_TOUT_INT_CLR);
         } else if (UART_TXFIFO_EMPTY_INT_ST == (uart_intr_status & UART_TXFIFO_EMPTY_INT_ST)) {
-    //        printf("empty\n\r");
             WRITE_PERI_REG(UART_INT_CLR(uart_no), UART_TXFIFO_EMPTY_INT_CLR);
             CLEAR_PERI_REG_MASK(UART_INT_ENA(UART0), UART_TXFIFO_EMPTY_INT_ENA);
         } else {
@@ -335,7 +282,6 @@ uart_init_new(void)
 
     UART_SetPrintPort(UART0);
     UART_intr_handler_register(uart0_rx_intr_handler);
-    
     xTaskCreate(cmd_parser_task, "", DEFAULT_STACK_SIZE, NULL, tskIDLE_PRIORITY+2, NULL );
     xQueueUart = xQueueCreate(8, sizeof(uint8_t));  
     ETS_UART_INTR_ENABLE();

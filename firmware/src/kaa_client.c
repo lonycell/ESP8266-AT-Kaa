@@ -78,6 +78,7 @@ void kaa_run(void *pvParameters) {
 
 
 void kaa_loop_task(void *context) {
+    (void)context;
     kaa_cmd_evt_t cmd_evt;
     if(xQueueReceive(cmd_kaa_queue, (void*)&cmd_evt, (portTickType)CMD_KAA_LOOP_TASK_MAX_DELAY)) {
         switch(cmd_evt) {

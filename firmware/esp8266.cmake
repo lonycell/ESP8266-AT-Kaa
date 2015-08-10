@@ -39,10 +39,10 @@ set(ESP8266_INCDIRS
     ${ESP_SDK_BASE}/include/espressif/
     )
 
-set(ESP8266_LINKSCRIPT ld/eagle.app.v6.ld)
+set(ESP8266_LINKSCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/ld/eagle.app.v6.ld)
 
-set(ESP8266_LDFLAGS "-L${ESP_TOOLCHAIN_DIR}/../lib/gcc/xtensa-lx106-elf/4.8.2/ -L${ESP_SDK_BASE}/lib -T${ESP8266_LINKSCRIPT} -nostdlib -u call_user_start -static --start-group ${ESP8266_LIBS} -lesp-platform -lkaac_s --end-group --gc-sections -Map map")
+set(ESP8266_LDFLAGS "-L${CMAKE_CURRENT_SOURCE_DIR} -L${ESP_TOOLCHAIN_DIR}/../lib/gcc/xtensa-lx106-elf/4.8.2/ -L${ESP_SDK_BASE}/lib -T${ESP8266_LINKSCRIPT} -nostdlib -u call_user_start -static --start-group ${ESP8266_LIBS} -lesp-platform -lkaac_s --end-group --gc-sections -Map map")
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DESP8266_PLATFORM -Os -Wpointer-arith -Wl,-EL -fno-inline-functions -nostdlib -mlongcalls -mtext-section-literals -D__ets__ -DICACHE_FLASH")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DESP8266_PLATFORM -Os -Wno-pointer-sign -Wno-comment -Wno-implicit-function-declaration -Wpointer-arith -Wl,-EL -fno-inline-functions -nostdlib -mlongcalls -mtext-section-literals -D__ets__ -DICACHE_FLASH")
 
 
