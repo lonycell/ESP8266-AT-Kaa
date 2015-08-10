@@ -30,6 +30,12 @@
 #define CMD_WIFI_CONNECT "AT+CWJAP"
 
 /*
+ * Disconnect from AP
+ * AT+CWQAP
+ */
+#define CMD_WIFI_DISCONNECT "AT+CWQAP"
+
+/*
  * Spawn a task with Kaa client main loop
  */
 #define CMD_KAA_START    "KAA+START"

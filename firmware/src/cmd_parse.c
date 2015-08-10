@@ -133,6 +133,11 @@ void cmd_parse_cmd() {
         wifi_station_disconnect();
         goto error;
     }
+    
+    if(CMD_CMP(CMD_WIFI_DISCONNECT)) {
+        wifi_station_disconnect();
+        goto succ;
+    }
 
     if (CMD_CMP(CMD_GET_IP)) {
         struct ip_info ip;
