@@ -19,6 +19,9 @@ int log_upload(kaa_client_t *kaa_client, char *str) {
     kaa_error_t err = kaa_logging_add_record(
                       kaa_client_get_context(kaa_client)->log_collector,
                       log_record);
+
+    log_record->destroy(log_record);
+
     return err;
 }
 

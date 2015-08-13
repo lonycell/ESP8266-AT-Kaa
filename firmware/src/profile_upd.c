@@ -24,6 +24,6 @@ int profile_update(kaa_client_t *kaa_client, char *str) {
     kaa_error_t err = kaa_profile_manager_update_profile(
             kaa_client_get_context(kaa_client)->profile_manager, 
             profile);
-
+    profile->destroy(profile);
     return err;
 }

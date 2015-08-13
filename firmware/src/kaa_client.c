@@ -89,7 +89,9 @@ void kaa_loop_task(void *context) {
                 break;
             case KAA_CMD_PROFILE_UPDATE:
                 if(xSemaphoreTake(cmd_arg_semphr, (portTickType)portMAX_DELAY)) {
-                    cmd_print(cmd_arg);
+#ifdef SHOW_SYSTEM_MESSAGES
+                    cmd_print(cmd_arg); /* TODO: probably remove this line */
+#endif /* SHOW_SYSTEM_MESSAGES */
                     int e = profile_update(kaa_client, cmd_arg);
                     xSemaphoreGive(cmd_arg_semphr);
                     if(e)
@@ -104,7 +106,9 @@ void kaa_loop_task(void *context) {
                 break;
             case KAA_CMD_LOG_UPLOAD:
                 if(xSemaphoreTake(cmd_arg_semphr, (portTickType)CMD_KAA_LOOP_TASK_MAX_DELAY)) {
-                    cmd_print(cmd_arg);
+#ifdef SHOW_SYSTEM_MESSAGES
+                    cmd_print(cmd_arg); /* TODO: probably remove this line */
+#endif /* SHOW_SYSTEM_MESSAGES */
                     int e = log_upload(kaa_client, cmd_arg);
                     xSemaphoreGive(cmd_arg_semphr);
                     if(e)
