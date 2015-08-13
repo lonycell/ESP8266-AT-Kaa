@@ -67,6 +67,7 @@ Here is a list of currently supported commands:
 |----|:------------|:--------|:-------------|
 | `AT`  | Check if firmware is alive | `AT` | `OK` |
 | `AT+RST` | Reboot chip  | `AT+RST` | - |
+| `AT+GMR` | Print firmware version | `AT+GMR` | `0.4` |
 | `AT+CIFSR` | Print current IP address | `AT+CIFSR` | `194.66.82.11` |
 | `AT+CWJAP` | Connect to Wifi | `AT+CWJAP myWifi superPassword` | `OK` if successfull, `ERR` if failed |
 | `AT+CWQAP` | Disconnect from WiFi | `AT+CWQAP` | `OK` |
