@@ -20,7 +20,7 @@ Please follow these simple steps.
 
 ###Customising build
 
-To customze ESP8266-AT-Kaa firware build, open `include/config.h` file. There is a number of defines which configure the firmware.
+To customze ESP8266-AT-Kaa firware build, edit `include/config.h` file. There is a number of defines which configure the firmware.
 
 | Name | Description | Default value |
 |------|-------------|---------------|
