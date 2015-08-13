@@ -19,6 +19,11 @@
 
 
 /*
+ * Get firmware version
+ */
+#define CMD_GET_VERSION "AT+GMR"
+
+/*
  * Show current ip address
  */
 #define CMD_GET_IP   "AT+CIFSR"

@@ -78,6 +78,10 @@ void cmd_parse_cmd() {
     if (CMD_CMP(CMD_RST)) {
         system_restart();
     }
+
+    if (CMD_CMP(CMD_GET_VERSION)) {
+        cmd_print(FIRMWARE_VERSION);
+    }
     
     if (CMD_CMP(CMD_WIFI_CONNECT)) {
         char *params[2];

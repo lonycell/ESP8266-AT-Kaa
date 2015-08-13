@@ -64,7 +64,7 @@ Here is a list of currently supported commands:
 ####AT Commands
 
 |Name| Description | Example |Sample output |
-|----|:-----------:|:-------:|:------------:|
+|----|:------------|:--------|:-------------|
 | `AT`  | Check if firmware is alive | `AT` | `OK` |
 | `AT+RST` | Reboot chip  | `AT+RST` | - |
 | `AT+CIFSR` | Print current IP address | `AT+CIFSR` | `194.66.82.11` |
@@ -74,7 +74,7 @@ Here is a list of currently supported commands:
 ####Kaa-specific commands
 
 |Name| Description | Example |Sample output |
-|----|:-----------:|:-------:|:------------:|
+|:----|:------------|:--------|:-------------|
 | `KAA+START` | Spawn Kaa client into background task | `KAA+START` | `OK` if Kaa client was successfully created, `ERR` if error occured |
 | `KAA+STOP` | Deinitialize all Kaa transport channels and kill Kaa client background task | `KAA+KILL` | `OK` or `ERR` |
 | **WIP** `KAA+PRO` | Update Kaa endpoint profile |`KAA+PRO { profile json according to profile schema created in Kaa Admin UI }`| `OK` or `ERR` |

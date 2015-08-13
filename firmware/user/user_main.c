@@ -10,8 +10,7 @@ void ICACHE_FLASH_ATTR user_init() {
     cmd_init();
     uart_init_new();
     UART_SetBaudrate(UART0, 115200);
-    system_print_meminfo();
-    printf("Free heap: %d\r\n", system_get_free_heap_size());
+    cmd_print(HELLO_MSG);
    
 #ifndef SHOW_SYSTEM_MESSAGES
     /* redirect system garbage messages to UART1 */
