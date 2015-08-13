@@ -1,3 +1,5 @@
 src/cmd_parse.c: TODO: accept SSID and password in "", so that they can contain spaces
 src/profile_upd.c: TODO: decide on defaultProfile value
 
+For more TODO's, grep -r TODO
+
