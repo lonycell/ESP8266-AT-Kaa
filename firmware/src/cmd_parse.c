@@ -65,7 +65,7 @@ void cmd_parser_task(void *pvParameters) {
 
 /*
  * Sorry for using goto so much.
- * Honestly, I don't like it, but this way the code looks clearier
+ * Honestly, I don't like it, but this way the resulting code is a bit smaller.
  */
 void cmd_parse_cmd() {
     if (!cmd_buffer_ptr)

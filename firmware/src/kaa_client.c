@@ -15,7 +15,7 @@
 #include <kaa/kaa_error.h>
 #include <kaa/platform/kaa_client.h>
 
-#define KAA_CMD_QUEUE_LEN 2
+#define KAA_CMD_QUEUE_LEN 1 
 
 static kaa_client_t *kaa_client = NULL;
 
