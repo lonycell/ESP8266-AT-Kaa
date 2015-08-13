@@ -36,7 +36,8 @@ KAA_LIB_PATH="$LIBS_PATH/kaa"
 KAA_C_LIB_HEADER_PATH="$KAA_LIB_PATH/src"
 KAA_CPP_LIB_HEADER_PATH="$KAA_LIB_PATH/kaa"
 KAA_SDK_TAR="kaa-client*.tar.gz"
-ESPTOOL="esptool.py"
+ESPTOOLPY="esptool.py"
+
 function build_thirdparty {
     if [[ ! -d "$KAA_C_LIB_HEADER_PATH" &&  ! -d "$KAA_CPP_LIB_HEADER_PATH" ]]
     then
@@ -84,8 +85,12 @@ function clean {
 }
 
 function run {
+    sudo $ESPTOOLPY run
+}
+
+function flash {
     cd "$PROJECT_HOME/$BUILD_DIR"
-    sudo $ESPTOOL write_flash 0x00000 0x00000.bin 0x40000 0x40000.bin
+    sudo $ESPTOOLPY write_flash 0x00000 0x00000.bin 0x40000 0x40000.bin
 }
 
 for cmd in $@
@@ -101,11 +106,16 @@ case "$cmd" in
         run
     ;;
 
+
+    flash)
+        flash
+    ;;
+
     deploy)
         clean
         build_thirdparty
         build_app
-        run
+        flash
         ;;
 
     clean)
