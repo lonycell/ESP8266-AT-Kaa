@@ -4,13 +4,13 @@ This directory contains firmware for Kaa-powered AT command set for ESP8266 WiFi
 
 ##Requirements
 
-For information on how to connect ESP8266 to your PC, compile and install Xtensa-lx106 toolchain, ESP RTOS SDK, esptool.py and Kaa C SDK, please refer to this [page](http://docs.kaaproject.org/display/KAA/ESP8266)
+For information on how to connect ESP8266 to your PC, compile and install Xtensa-lx106 toolchain, ESP RTOS SDK, and esptool.py, please refer to this [page](http://docs.kaaproject.org/display/KAA/ESP8266).
 
 ##Building
 
 Please follow these simple steps.
 
-* Generate Kaa C SDK in [Kaa Sandbox](http://docs.kaaproject.org/display/KAA/Kaa+Sandbox).
+* Generate Kaa `Reduced C SDK` in [Kaa Sandbox](http://docs.kaaproject.org/display/KAA/Kaa+Sandbox).
 * Put downloaded SDK into `libs/kaa` folder.
 
 * Execute the following to build:
@@ -64,7 +64,7 @@ Here is a list of currently supported commands:
 ####AT Commands
 
 |Name| Description | Example |Sample output |
-|:--:|:-----------:|:-------:|:------------:|
+|----|:-----------:|:-------:|:------------:|
 | `AT`  | Check if firmware is alive | `AT` | `OK` |
 | `AT+RST` | Reboot chip  | `AT+RST` | - |
 | `AT+CIFSR` | Print current IP address | `AT+CIFSR` | `194.66.82.11` |
@@ -74,7 +74,7 @@ Here is a list of currently supported commands:
 ####Kaa-specific commands
 
 |Name| Description | Example |Sample output |
-|:--:|:-----------:|:-------:|:------------:|
+|----|:-----------:|:-------:|:------------:|
 | `KAA+START` | Spawn Kaa client into background task | `KAA+START` | `OK` if Kaa client was successfully created, `ERR` if error occured |
 | `KAA+STOP` | Deinitialize all Kaa transport channels and kill Kaa client background task | `KAA+KILL` | `OK` or `ERR` |
 | **WIP** `KAA+PRO` | Update Kaa endpoint profile |`KAA+PRO { profile json according to profile schema created in Kaa Admin UI }`| `OK` or `ERR` |

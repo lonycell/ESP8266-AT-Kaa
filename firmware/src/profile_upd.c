@@ -17,9 +17,9 @@ int profile_update(kaa_client_t *kaa_client, char *str) {
     if(!str) {
         /* TODO: decide on defaultProfile value */
         static const char *defaultProfile = "{\"Default\":\"Value\"}";
-        profile->string = kaa_string_copy_create(defaultProfile);
+        profile->json = kaa_string_copy_create(defaultProfile);
     } else {
-        profile->string = kaa_string_copy_create(str);
+        profile->json = kaa_string_copy_create(str);
     }
     kaa_error_t err = kaa_profile_manager_update_profile(
             kaa_client_get_context(kaa_client)->profile_manager, 

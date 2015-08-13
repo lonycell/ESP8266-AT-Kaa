@@ -83,6 +83,7 @@ void cmd_parse_cmd() {
         char *params[2];
         size_t ssid_len, pwd_len;
         char *cmd = cmd_buffer+strlen(CMD_WIFI_CONNECT);
+        /* TODO: accept SSID and password in "", so that they can contain spaces */
         params[0] = strtok(cmd, " "); /* SSID */
         params[1] = strtok(NULL, " "); /* password */
         
