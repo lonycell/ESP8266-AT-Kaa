@@ -77,7 +77,7 @@ Here is a list of currently supported commands:
 |Name| Description | Example |Sample output |
 |:----|:------------|:--------|:-------------|
 | `KAA+START` | Spawn Kaa client into background task | `KAA+START` | `OK` if Kaa client was successfully created, `ERR` if error occured |
-| `KAA+STOP` | Deinitialize all Kaa transport channels and kill Kaa client background task | `KAA+KILL` | `OK` or `ERR` |
+| `KAA+STOP` | Deinitialize all Kaa transport channels and kill Kaa client background task | `KAA+STOP` | `OK` or `ERR` |
 | **WIP** `KAA+PRO` | Update Kaa endpoint profile |`KAA+PRO { profile json according to profile schema created in Kaa Admin UI }`| `OK` or `ERR` |
 | **WIP** `KAA+LOG` | Send Log Record to Kaa Server | `KAA+LOG { log record json according to log record schema created in Kaa Admin UI }` | `OK` or `ERR` |
 
