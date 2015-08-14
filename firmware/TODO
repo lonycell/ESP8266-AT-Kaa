@@ -1,3 +1,8 @@
+Features to implement:
+* AT+CWLAP list access points. Use wifi_station_scan().
+* AT+CIOBAUD change UART baudrate. Use UART_SetBaudrate() (defined in driver/uart.c)
+* Configuration receiver. The basic concept is to retrieve individual configuration variables via KAA+CONFIG?var and set the with KAA+CONFIG "var"="val"
+
 src/cmd_parse.c: TODO: accept SSID and password in "", so that they can contain spaces
 src/profile_upd.c: TODO: decide on defaultProfile value
 
